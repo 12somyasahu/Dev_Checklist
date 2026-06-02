@@ -1,0 +1,737 @@
+
+<style>
+:root {
+  --bg: #eff5fb;
+  --surface: #ffffff;
+  --surface-alt: #f7fbff;
+  --border: #d9e3ef;
+  --border-strong: #b8c7d8;
+  --text: #10243f;
+  --text-muted: #577189;
+  --primary: #2c6be0;
+  --primary-soft: #e6efff;
+  --success: #1d9e75;
+  --shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+  --radius: 22px;
+  --radius-sm: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans, Inter, system-ui, sans-serif);
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, rgba(44, 107, 224, 0.12), transparent 32%),
+              linear-gradient(180deg, #f6f9ff 0%, #eef4fb 100%);
+  color: var(--text);
+  padding: 24px;
+}
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 24px;
+}
+.page-header {
+  margin-bottom: 22px;
+  display: grid;
+  gap: 10px;
+}
+.page-header h1 {
+  font-size: clamp(1.8rem, 2.4vw, 2.4rem);
+  letter-spacing: -0.03em;
+}
+.page-header p {
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 780px;
+}
+.tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 1.75rem;
+}
+.tab-btn {
+  flex: 0 0 auto;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: rgba(255,255,255,0.28);
+  transform: translateY(-1px);
+}
+.tab-btn:hover {
+  border-color: var(--border-strong);
+}
+.panel {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+.panel.active { display: block; }
+.section {
+  margin-bottom: 1.5rem;
+  background: var(--surface-alt);
+  border: 1px solid rgba(37, 99, 235, 0.08);
+  border-radius: 18px;
+  padding: 18px;
+}
+.section:last-child { margin-bottom: 0; }
+.section-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title i {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--primary);
+  font-size: 0.85rem;
+}
+.items { display: flex; flex-direction: column; gap: 10px; }
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(16, 36, 63, 0.08);
+  background: white;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+.item:hover {
+  background: #f8fbff;
+  border-color: rgba(37, 99, 235, 0.18);
+  transform: translateY(-1px);
+}
+.item.checked {
+  opacity: 0.72;
+}
+.item.checked .item-label {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+.checkbox {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(16, 36, 63, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  flex-shrink: 0;
+  transition: all 0.18s ease;
+}
+.item.checked .checkbox {
+  background: var(--success);
+  border-color: var(--success);
+}
+.item.checked .checkbox::after {
+  content: '✓';
+  font-size: 10px;
+  color: white;
+  font-weight: 700;
+}
+.item-label {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.item-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.progress-bar-wrap {
+  background: rgba(37, 99, 235, 0.08);
+  border-radius: 999px;
+  height: 10px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2c6be0, #38bdf8);
+  transition: width 0.25s ease;
+}
+.progress-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.progress-label span:first-child {
+  font-weight: 600;
+  color: var(--text);
+}
+.reset-btn {
+  margin-top: 1.25rem;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  background: var(--primary);
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.16s ease;
+}
+.reset-btn:hover {
+  background: #1f57c3;
+  transform: translateY(-1px);
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 900px) {
+  .grid2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  body { padding: 16px; }
+  .wrap { padding: 16px; }
+  .tabs { gap: 6px; }
+  .tab-btn { padding: 10px 14px; font-size: 12px; }
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+</style>
+
+<div class="wrap">
+  <div class="page-header">
+    <h1>Developer checklist for all tech stacks</h1>
+    <p>Track progress across Next.js, Node.js, CSS, databases, and ORM best practices. Tap each item to mark it done, and switch tabs to review each stack.</p>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab-btn active" data-tab="nextjs">Next.js / React</button>
+    <button class="tab-btn" data-tab="node">Node.js / Express</button>
+    <button class="tab-btn" data-tab="css">CSS / Tailwind / Bootstrap</button>
+    <button class="tab-btn" data-tab="mysql">MySQL</button>
+    <button class="tab-btn" data-tab="mongo">MongoDB</button>
+    <button class="tab-btn" data-tab="orm">ORM / Queries</button>
+  </div>
+
+  <div id="panels"></div>
+</div>
+
+<script>
+const data = {
+  nextjs: {
+    label: "Next.js / React",
+    sections: [
+      {
+        title: "Function & Variable",
+        icon: "ti-code",
+        items: [
+          { label: "No unused variables declared", sub: "ESLint: no-unused-vars" },
+          { label: "No undeclared variables used", sub: "ESLint: no-undef" },
+          { label: "Functions are small & single-purpose", sub: "Max 30 lines per function" },
+          { label: "Arrow functions used consistently", sub: "ESLint: prefer-arrow-callback" },
+          { label: "Async functions have proper await/catch", sub: "ESLint: no-floating-promises" },
+        ]
+      },
+      {
+        title: "Naming Convention",
+        icon: "ti-tag",
+        items: [
+          { label: "Components in PascalCase", sub: "e.g. UserCard, ProductList" },
+          { label: "Variables & functions in camelCase", sub: "e.g. getUserData, isLoading" },
+          { label: "Constants in UPPER_SNAKE_CASE", sub: "e.g. MAX_RETRY, API_URL" },
+          { label: "CSS classes in kebab-case", sub: "e.g. user-card, nav-menu" },
+          { label: "Boolean vars prefixed is/has/can", sub: "e.g. isLoading, hasError" },
+        ]
+      },
+      {
+        title: "Code Quality",
+        icon: "ti-sparkles",
+        items: [
+          { label: "No duplicate/copy-paste code blocks", sub: "jscpd check" },
+          { label: "Components are reusable & props-driven", sub: "No hardcoded values inside" },
+          { label: "Props are typed (TypeScript/PropTypes)", sub: "tsc --strict" },
+          { label: "No console.log left in code", sub: "ESLint: no-console" },
+          { label: "Imports are clean & ordered", sub: "ESLint: import/order" },
+        ]
+      },
+      {
+        title: "Best Practices",
+        icon: "ti-award",
+        items: [
+          { label: "React hooks follow rules of hooks", sub: "eslint-plugin-react-hooks" },
+          { label: "Keys used properly in lists", sub: "No array index as key" },
+          { label: "useEffect dependencies are correct", sub: "ESLint: exhaustive-deps" },
+          { label: "No direct state mutation", sub: "Always use setState/useState" },
+          { label: "Error boundaries implemented", sub: "For critical UI sections" },
+        ]
+      },
+      {
+        title: "Security",
+        icon: "ti-shield",
+        items: [
+          { label: "No dangerouslySetInnerHTML used", sub: "Prevents XSS attacks" },
+          { label: "User inputs are sanitized", sub: "DOMPurify or similar" },
+          { label: "Env variables not exposed to client", sub: "No NEXT_PUBLIC_ for secrets" },
+          { label: "API calls have error handling", sub: "try/catch on all fetches" },
+          { label: "Sensitive data not logged", sub: "No passwords/tokens in logs" },
+        ]
+      },
+      {
+        title: "Performance",
+        icon: "ti-bolt",
+        items: [
+          { label: "Heavy components are lazy loaded", sub: "React.lazy / dynamic import" },
+          { label: "Images are optimized", sub: "next/image component used" },
+          { label: "Unnecessary re-renders avoided", sub: "useMemo/useCallback where needed" },
+          { label: "Bundle size checked", sub: "Webpack Bundle Analyzer" },
+        ]
+      },
+      {
+        title: "Documentation",
+        icon: "ti-file-text",
+        items: [
+          { label: "Complex functions have JSDoc comments", sub: "/** @param @returns */" },
+          { label: "Props documented in component", sub: "TypeScript types or PropTypes" },
+          { label: "README updated if feature added", sub: "" },
+        ]
+      }
+    ]
+  },
+  node: {
+    label: "Node.js / Express",
+    sections: [
+      {
+        title: "Function & Variable",
+        icon: "ti-code",
+        items: [
+          { label: "No unused variables or imports", sub: "ESLint: no-unused-vars" },
+          { label: "Functions are single-responsibility", sub: "One function = one job" },
+          { label: "Callback hell avoided", sub: "Use async/await instead" },
+          { label: "All promises are awaited or chained", sub: "No floating promises" },
+          { label: "Global variables avoided", sub: "Use module scope instead" },
+        ]
+      },
+      {
+        title: "Naming Convention",
+        icon: "ti-tag",
+        items: [
+          { label: "Files in kebab-case", sub: "e.g. user-controller.js" },
+          { label: "Functions & variables in camelCase", sub: "e.g. getUserById" },
+          { label: "Classes in PascalCase", sub: "e.g. UserService" },
+          { label: "Constants in UPPER_SNAKE_CASE", sub: "e.g. JWT_SECRET" },
+          { label: "Route paths in kebab-case", sub: "e.g. /api/user-profile" },
+        ]
+      },
+      {
+        title: "Code Quality",
+        icon: "ti-sparkles",
+        items: [
+          { label: "Business logic separated from routes", sub: "Controller → Service pattern" },
+          { label: "No duplicate logic across routes", sub: "Use middleware for shared logic" },
+          { label: "Config values not hardcoded", sub: "Use .env + dotenv" },
+          { label: "Proper HTTP status codes used", sub: "200/201/400/401/403/404/500" },
+          { label: "Response format is consistent", sub: "{ success, data, message }" },
+        ]
+      },
+      {
+        title: "Best Practices",
+        icon: "ti-award",
+        items: [
+          { label: "Input validation on all routes", sub: "express-validator / Joi / Zod" },
+          { label: "Error handling middleware exists", sub: "app.use((err, req, res, next))" },
+          { label: "Rate limiting applied", sub: "express-rate-limit on APIs" },
+          { label: "CORS configured properly", sub: "Not wildcard * in production" },
+          { label: "Logging implemented", sub: "Pino or Winston" },
+        ]
+      },
+      {
+        title: "Security",
+        icon: "ti-shield",
+        items: [
+          { label: "Helmet.js applied", sub: "Secures HTTP headers" },
+          { label: "JWT tokens validated properly", sub: "Expiry, signature, payload" },
+          { label: "Passwords are hashed", sub: "bcrypt with salt rounds >= 10" },
+          { label: "SQL/NoSQL injection prevented", sub: "Parameterized queries / sanitize" },
+          { label: "Secrets in environment variables", sub: "Never in source code" },
+        ]
+      },
+      {
+        title: "Performance",
+        icon: "ti-bolt",
+        items: [
+          { label: "DB queries are optimized", sub: "No N+1 queries" },
+          { label: "Response compression enabled", sub: "compression middleware" },
+          { label: "Caching used where appropriate", sub: "Redis for frequent queries" },
+          { label: "Large payloads paginated", sub: "limit + offset or cursor" },
+        ]
+      },
+      {
+        title: "Documentation",
+        icon: "ti-file-text",
+        items: [
+          { label: "API endpoints documented", sub: "Swagger / OpenAPI spec" },
+          { label: "Complex functions have JSDoc", sub: "/** @param @returns */" },
+          { label: ".env.example file updated", sub: "All new env vars listed" },
+        ]
+      }
+    ]
+  },
+  css: {
+    label: "CSS / Tailwind / Bootstrap",
+    sections: [
+      {
+        title: "Naming Convention",
+        icon: "ti-tag",
+        items: [
+          { label: "Custom CSS classes in kebab-case", sub: "e.g. .nav-menu, .user-card" },
+          { label: "BEM methodology followed", sub: ".block__element--modifier" },
+          { label: "Tailwind classes sorted correctly", sub: "prettier-plugin-tailwindcss" },
+          { label: "No single-letter class names", sub: "Be descriptive always" },
+        ]
+      },
+      {
+        title: "Code Quality",
+        icon: "ti-sparkles",
+        items: [
+          { label: "No duplicate CSS rules", sub: "Stylelint: no-duplicate-selectors" },
+          { label: "No unused CSS classes", sub: "PurgeCSS check" },
+          { label: "No !important overuse", sub: "Max 1-2 justified uses" },
+          { label: "CSS properties in standard order", sub: "stylelint-order plugin" },
+          { label: "No inline styles in HTML/JSX", sub: "Use classes instead" },
+        ]
+      },
+      {
+        title: "Best Practices",
+        icon: "ti-award",
+        items: [
+          { label: "Mobile-first approach followed", sub: "Start with smallest screen" },
+          { label: "CSS variables used for theme values", sub: "Colors, spacing, fonts" },
+          { label: "No hardcoded pixel font sizes", sub: "Use rem/em instead" },
+          { label: "Flexbox/Grid used over floats", sub: "Modern layout methods" },
+          { label: "Consistent spacing scale used", sub: "Tailwind: p-4 not p-[17px]" },
+        ]
+      },
+      {
+        title: "Tailwind Specific",
+        icon: "ti-wind",
+        items: [
+          { label: "No conflicting Tailwind classes", sub: "Use tailwind-merge" },
+          { label: "Repeated class groups extracted", sub: "Create reusable component" },
+          { label: "No arbitrary values unless needed", sub: "Prefer design token classes" },
+          { label: "Dark mode classes added", sub: "dark: prefix where needed" },
+        ]
+      },
+      {
+        title: "Bootstrap Specific",
+        icon: "ti-letter-b",
+        items: [
+          { label: "Correct Bootstrap grid used", sub: "col-md-6 not manual width" },
+          { label: "bootlint validation passed", sub: "No invalid Bootstrap markup" },
+          { label: "Unused Bootstrap CSS purged", sub: "Import only needed modules" },
+        ]
+      },
+      {
+        title: "Accessibility & Performance",
+        icon: "ti-accessible",
+        items: [
+          { label: "Color contrast ratio >= 4.5:1", sub: "WCAG AA standard" },
+          { label: "Focus styles not removed", sub: "outline:none only with alternative" },
+          { label: "CSS file size optimized", sub: "CSSNano in build pipeline" },
+          { label: "Lighthouse score >= 90", sub: "Performance + Accessibility" },
+        ]
+      }
+    ]
+  },
+  mysql: {
+    label: "MySQL",
+    sections: [
+      {
+        title: "Naming Convention",
+        icon: "ti-tag",
+        items: [
+          { label: "Tables in snake_case plural", sub: "users, order_items, product_tags" },
+          { label: "Columns in snake_case", sub: "first_name, created_at, is_active" },
+          { label: "Primary key named id or table_id", sub: "user_id, order_id" },
+          { label: "Foreign keys named ref_table_id", sub: "user_id, product_id" },
+          { label: "Indexes prefixed idx_", sub: "idx_users_email" },
+        ]
+      },
+      {
+        title: "Query Quality",
+        icon: "ti-sparkles",
+        items: [
+          { label: "SELECT * avoided", sub: "List only needed columns" },
+          { label: "N+1 query problem avoided", sub: "Use JOINs instead of loops" },
+          { label: "Queries use existing indexes", sub: "Check EXPLAIN output" },
+          { label: "Large result sets paginated", sub: "LIMIT + OFFSET used" },
+          { label: "No duplicate query logic", sub: "Use stored procedures/views" },
+        ]
+      },
+      {
+        title: "Best Practices",
+        icon: "ti-award",
+        items: [
+          { label: "Prepared statements used always", sub: "No string concatenation in SQL" },
+          { label: "Transactions used for multi-step ops", sub: "BEGIN / COMMIT / ROLLBACK" },
+          { label: "Foreign key constraints defined", sub: "Referential integrity enforced" },
+          { label: "Timestamps on all tables", sub: "created_at, updated_at" },
+          { label: "Migrations versioned in Flyway/Liquibase", sub: "No direct schema edits" },
+        ]
+      },
+      {
+        title: "Security",
+        icon: "ti-shield",
+        items: [
+          { label: "No raw user input in queries", sub: "Parameterized queries always" },
+          { label: "DB user has least privilege", sub: "Only SELECT/INSERT needed roles" },
+          { label: "Sensitive data encrypted at rest", sub: "Passwords, tokens, PII" },
+          { label: "mysql_secure_installation run", sub: "Default accounts removed" },
+          { label: "Audit logging enabled", sub: "Percona Audit Log Plugin" },
+        ]
+      },
+      {
+        title: "Performance",
+        icon: "ti-bolt",
+        items: [
+          { label: "Indexes on frequently queried columns", sub: "WHERE, JOIN, ORDER BY cols" },
+          { label: "EXPLAIN ANALYZE run on heavy queries", sub: "Check execution plan" },
+          { label: "No functions on indexed columns in WHERE", sub: "Breaks index usage" },
+          { label: "Connection pooling configured", sub: "Max connections managed" },
+        ]
+      },
+      {
+        title: "Documentation",
+        icon: "ti-file-text",
+        items: [
+          { label: "Schema documented in DBDocs/SchemaSpy", sub: "" },
+          { label: "Complex queries have comments", sub: "-- Explain the why" },
+          { label: "Migration files have description", sub: "V1__create_users_table.sql" },
+        ]
+      }
+    ]
+  },
+  mongo: {
+    label: "MongoDB",
+    sections: [
+      {
+        title: "Naming Convention",
+        icon: "ti-tag",
+        items: [
+          { label: "Collections in camelCase plural", sub: "users, orderItems, productTags" },
+          { label: "Fields in camelCase", sub: "firstName, createdAt, isActive" },
+          { label: "Schema models in PascalCase singular", sub: "User, Order, Product" },
+          { label: "Indexes named descriptively", sub: "email_idx, user_status_idx" },
+        ]
+      },
+      {
+        title: "Schema Quality",
+        icon: "ti-sparkles",
+        items: [
+          { label: "Mongoose strict mode enabled", sub: "{ strict: true } on schema" },
+          { label: "All fields have proper types defined", sub: "String, Number, Boolean, Date" },
+          { label: "Required fields marked required: true", sub: "" },
+          { label: "Default values set where appropriate", sub: "default: Date.now, false" },
+          { label: "No undefined schema fields used in queries", sub: "" },
+        ]
+      },
+      {
+        title: "Best Practices",
+        icon: "ti-award",
+        items: [
+          { label: "Embedded vs referenced docs decided", sub: "Based on access patterns" },
+          { label: "Timestamps added to all schemas", sub: "{ timestamps: true }" },
+          { label: "Indexes defined in schema", sub: "schema.index({ field: 1 })" },
+          { label: "Migrations versioned in Mongock", sub: "No direct manual edits" },
+          { label: "Large arrays not embedded unbounded", sub: "Use references instead" },
+        ]
+      },
+      {
+        title: "Security",
+        icon: "ti-shield",
+        items: [
+          { label: "express-mongo-sanitize applied", sub: "Prevents NoSQL injection" },
+          { label: "User input not passed directly to query", sub: "Always sanitize/validate" },
+          { label: "DB user has least privilege role", sub: "readWrite not root" },
+          { label: "Connection string not in source code", sub: "Use environment variables" },
+          { label: "mongoaudit security scan passed", sub: "" },
+        ]
+      },
+      {
+        title: "Performance",
+        icon: "ti-bolt",
+        items: [
+          { label: "Explain plan checked for heavy queries", sub: "collection.explain()" },
+          { label: "Indexes cover query fields", sub: "Atlas Performance Advisor" },
+          { label: "Aggregation pipeline optimized", sub: "$match early, $project fields" },
+          { label: "Lean queries used where possible", sub: ".lean() for read-only" },
+        ]
+      },
+      {
+        title: "Documentation",
+        icon: "ti-file-text",
+        items: [
+          { label: "Schema documented in DBDocs", sub: "" },
+          { label: "Complex aggregations have comments", sub: "" },
+          { label: "Migration files have description", sub: "" },
+        ]
+      }
+    ]
+  },
+  orm: {
+    label: "ORM / Queries",
+    sections: [
+      {
+        title: "Prisma",
+        icon: "ti-database",
+        items: [
+          { label: "Schema validated with prisma validate", sub: "" },
+          { label: "Naming conventions follow prisma-lint", sub: "camelCase fields, PascalCase models" },
+          { label: "Relations defined correctly", sub: "@relation with fields & references" },
+          { label: "Migrations generated not hand-edited", sub: "prisma migrate dev" },
+          { label: "Select only needed fields in queries", sub: "{ select: { id, name } }" },
+          { label: "Transactions used for multi-step writes", sub: "prisma.$transaction([])" },
+        ]
+      },
+      {
+        title: "Sequelize",
+        icon: "ti-database",
+        items: [
+          { label: "Models defined with proper DataTypes", sub: "DataTypes.STRING not plain string" },
+          { label: "Associations defined in models", sub: "hasMany, belongsTo, hasOne" },
+          { label: "Raw queries use replacements", sub: "No string interpolation in SQL" },
+          { label: "Migrations used for schema changes", sub: "Never sync: force true in prod" },
+          { label: "Eager loading used where needed", sub: "{ include: [Model] }" },
+        ]
+      },
+      {
+        title: "TypeORM",
+        icon: "ti-database",
+        items: [
+          { label: "Entities decorated properly", sub: "@Entity, @Column, @PrimaryGeneratedColumn" },
+          { label: "Relations decorated correctly", sub: "@OneToMany, @ManyToOne etc." },
+          { label: "QueryBuilder used for complex queries", sub: "Not raw SQL strings" },
+          { label: "Migrations generated via CLI", sub: "typeorm migration:generate" },
+          { label: "Eager/Lazy loading configured", sub: "Based on use case" },
+        ]
+      },
+      {
+        title: "General Query Standards",
+        icon: "ti-award",
+        items: [
+          { label: "No N+1 query patterns", sub: "Use include/join/populate" },
+          { label: "Pagination on all list queries", sub: "skip + take / limit + offset" },
+          { label: "Sensitive fields excluded from results", sub: "Never return password hash" },
+          { label: "Transactions for batch operations", sub: "All or nothing writes" },
+          { label: "Connection pool configured", sub: "Max/min connections set" },
+        ]
+      }
+    ]
+  }
+};
+
+function buildPanel(key) {
+  const tech = data[key];
+  const total = tech.sections.reduce((a, s) => a + s.items.length, 0);
+  let html = `
+    <div class="progress-label">
+      <span>Progress</span>
+      <span id="prog-label-${key}">0 / ${total} completed</span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar-${key}" style="width:0%"></div></div>
+    <div class="grid2">
+  `;
+  tech.sections.forEach((sec, si) => {
+    html += `<div class="section">
+      <div class="section-title"><i class="ti ${sec.icon}" aria-hidden="true"></i> ${sec.title}</div>
+      <div class="items">`;
+    sec.items.forEach((item, ii) => {
+      const id = `${key}-${si}-${ii}`;
+      html += `<div class="item" id="item-${id}" onclick="toggle('${key}','${id}','${total}')">
+        <div class="checkbox" id="cb-${id}"></div>
+        <div>
+          <div class="item-label">${item.label}</div>
+          ${item.sub ? `<div class="item-sub">${item.sub}</div>` : ''}
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</div><button class="reset-btn" onclick="resetPanel('${key}','${total}')"><i class="ti ti-refresh" aria-hidden="true"></i> Reset checklist</button>`;
+  return html;
+}
+
+const panels = document.getElementById('panels');
+Object.keys(data).forEach(key => {
+  const div = document.createElement('div');
+  div.className = 'panel' + (key === 'nextjs' ? ' active' : '');
+  div.id = 'panel-' + key;
+  div.innerHTML = buildPanel(key);
+  panels.appendChild(div);
+});
+
+const checked = {};
+function toggle(key, id, total) {
+  checked[id] = !checked[id];
+  const item = document.getElementById('item-' + id);
+  item.classList.toggle('checked', checked[id]);
+  updateProgress(key, total);
+}
+function updateProgress(key, total) {
+  const done = Object.keys(checked).filter(k => k.startsWith(key + '-') && checked[k]).length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('prog-bar-' + key).style.width = pct + '%';
+  document.getElementById('prog-label-' + key).textContent = done + ' / ' + total + ' completed';
+}
+function resetPanel(key, total) {
+  Object.keys(checked).forEach(k => { if (k.startsWith(key + '-')) checked[k] = false; });
+  document.querySelectorAll(`#panel-${key} .item`).forEach(el => el.classList.remove('checked'));
+  updateProgress(key, total);
+}
+
+document.getElementById('tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  const tab = btn.dataset.tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+});
+</script>
